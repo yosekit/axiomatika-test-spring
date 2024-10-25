@@ -60,15 +60,14 @@ public abstract class BaseRepositoryImpl<T, ID> implements BaseRepository<T, ID>
             }
         }
 
-        // Predicate[]::new
-        query.where(builder.and(predicates.toArray(new Predicate[0])));
+        query.where(builder.and(predicates.toArray(Predicate[]::new)));
         return entityManager.createQuery(query).getResultList();
     }
 
     private Predicate buildPredicate(CriteriaBuilder builder, Path<?> path, Object value) {
         if (value instanceof String) {
-            String searchString = "%" + value + "%";  // Добавляем % для поиска подстроки
-            return builder.like(path.as(String.class), searchString);
+            String searchString = "%" + ((String) value).toLowerCase() + "%";  // Добавляем % для поиска подстроки
+            return builder.like(builder.lower(path.as(String.class)), searchString);
         } else {
             return builder.equal(path, value);
         }
