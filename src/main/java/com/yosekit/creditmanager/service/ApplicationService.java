@@ -39,6 +39,7 @@ public class ApplicationService {
                         app.getRequiredTerm(),
                         app.getCreatedAt(),
                         app.getClient(),
+                        app.getClient().getPassport(),
                         app.getStatus()
                 )).toList();
     }

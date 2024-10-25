@@ -39,11 +39,11 @@ public class ContractService {
                         contract.getTerm(),
                         contract.getCreatedAt(),
                         contract.getApplication().getClient(),
+                        contract.getApplication().getClient().getPassport(),
                         contract.getSignDate(),
                         contract.getSignStatus()
                 )).toList();
     }
-
 
     public void createContract(Application application) {
         if (application.getContract() != null) {
@@ -68,6 +68,4 @@ public class ContractService {
 
         contractRepository.save(contract);
     }
-
-
 }

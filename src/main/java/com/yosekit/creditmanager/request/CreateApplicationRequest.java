@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 
 
 @Getter
@@ -20,5 +21,10 @@ public class CreateApplicationRequest {
 
     public CreateApplicationRequest(CreateClientRequest client) {
         this.client = client;
+    }
+
+    // term must be string ISO 8601
+    public void setRequiredTerm(String requiredTerm) {
+        this.requiredTerm = LocalDate.now().plus(Period.parse(requiredTerm));
     }
 }

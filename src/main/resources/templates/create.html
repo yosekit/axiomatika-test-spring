@@ -298,14 +298,22 @@
                     <div class="column">
                         <div class="field">
                             <label class="label" for="requiredTerm">Срок кредита</label>
-                            <input
-                                    class="input"
-                                    type="date"
-                                    id="requiredTerm"
-                                    name="requiredTerm"
-                                    required
-                                    th:field="*{requiredTerm}"
-                            />
+                            <div class="control">
+                                <div class="select">
+                                    <select
+                                            id="requiredTerm"
+                                            name="requiredTerm"
+                                            required
+                                            th:field="*{requiredTerm}"
+                                    >
+                                        <option value="P1M">1 месяц</option>
+                                        <option value="P3M">3 месяца</option>
+                                        <option value="P6M">6 месяцев</option>
+                                        <option value="P9M">9 месяцев</option>
+                                        <option value="P1Y">1 год</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
