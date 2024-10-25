@@ -20,7 +20,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="appViewModel : ${appViewModels}">
+                        <tr th:each="appViewModel : ${appViewModels}" th:attr="data-id=${appViewModel.id}">
                             <td th:text="${appViewModel.id}"></td>
                             <td th:text="${appViewModel.requiredAmount}"></td>
                             <td th:text="${appViewModel.requiredTerm}"></td>
@@ -30,8 +30,14 @@
                             <td>
                                 <div class="buttons">
                                     <div th:if="${appViewModel.status != 'Одобрена'}" th:remove="tag">
-                                        <button class="button is-success approve-app-btn" th:attr="data-id=${appViewModel.getId()}">Одобрить</button>
-                                        <button class="button is-danger">Отклонить</button>
+                                        <form th:action="@{/applications/approve}" method="post" style="display:inline;">
+                                            <input type="hidden" name="appId" th:value="${appViewModel.id}" />
+                                            <button type="submit" class="button is-success">Одобрить</button>
+                                        </form>
+                                        <form th:action="@{/applications/reject}" method="post" style="display:inline;">
+                                            <input type="hidden" name="appId" th:value="${appViewModel.id}" />
+                                            <button type="submit" class="button is-danger">Отклонить</button>
+                                        </form>
                                     </div>
                                     <button class="button">
                                         <span class="icon">
@@ -44,6 +50,13 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <div th:if="${contractCreated}" class="notification-container">
+        <div class="notification is-info">
+            <button class="delete"></button>
+            Договор создан. <a th:href="@{/contracts(row=${newContractId})}">Перейти #<span th:text="${newContractId}" th:remove="tag"></span></a>
         </div>
     </div>
 

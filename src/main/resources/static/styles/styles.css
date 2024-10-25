@@ -53,3 +53,46 @@
     cursor: pointer;
     margin-left: 8px;
 }
+
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 1000;
+}
+
+.notification {
+    animation: fadeInOut 5s ease forwards;
+}
+
+.notification.show {
+    display: block;
+    opacity: 1;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(20px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(20px); }
+}
+
+
+table tr {
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+table tr:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table tr.selected {
+    background-color: #d1e7ff;
+    outline: 2px solid #007bff;
+    outline-offset: -2px;
+}
+
+table tr:active {
+    background-color: #b6d4fe;
+}

@@ -10,33 +10,52 @@ $(document).ready(function() {
     });
 
 
-    // Add Passport Tag
+    // Выделение строк в таблице
+    $("table tr").click(function() {
+        $("table tr").removeClass("selected");
+        $(this).addClass("selected");
+    });
+
+    // Выделение строки в таблице по ссылке
+    const rowId = (new URL(location.href)).searchParams.get('row');
+    if(rowId) {
+        const row = $(`tr[data-id="${rowId}"]`);
+        console.log("row:", row);
+        console.log("row.length:", row.length);
+        if (row.length) {
+            row.addClass("selected");
+            row[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
+
+
+    // Добавить "пасспорт" в поиск
     $('#addPassportBtn').click(function() {
-        addTag('passport', 'пасспорт');
+        addTagToSearchInput('passport', 'пасспорт');
     });
 
-    // Add Phone Tag
+    // Добавить "телефон" в поиск
     $('#addPhoneBtn').click(function() {
-        addTag('phone', 'телефон');
+        addTagToSearchInput('phone', 'телефон');
     });
 
-    // Function to add tag
-    function addTag(type, label) {
-        // Check if tag already exists
+    // Добавить тег в поиск
+    function addTagToSearchInput(type, label) {
         if ($('#searchInputContainer span[data-type="' + type + '"]').length > 0) {
-            return; // Do not add duplicate tag
+            return;
         }
 
-        var tag = $('<span>').attr('data-type', type).html(`${label}<input type="text" placeholder="${label}" class="input is-small" style="width: 100px;"><i class="fas fa-times"></i>`);
+        var tag = $('<span>').attr('data-type', type).html(`
+            ${label}<input type="text" placeholder="${label}" class="input is-small" style="width: 100px;">
+            <i class="fas fa-times"></i>`);
         $('#searchInputContainer').append(tag);
 
-        // Add event listener to remove tag
         tag.find('i').click(function() {
             tag.remove();
         });
     }
 
-    // Search button event listener
+    // Обработка поиска
     $('#searchButton').click(function () {
         var searchQuery = {};
         var fullName = $('#searchInput').val().trim();
@@ -91,37 +110,13 @@ $(document).ready(function() {
         });
     });
 
+
+    // Скорость пропадания уведомлений
+    setTimeout(() => {
+        $('.notification').fadeOut(300);
+    }, 15000); // 15 sec.
 });
 
-// Для кнопки "Одобрить" в /applications
-$(document).on('click', '.approve-app-btn', function() {
-    var appId = $(this).data('id');
-
-    $.ajax({
-        url: '/applications/approve',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(
-            {
-                id: appId
-            }
-        ),
-    });
-});
-
-// Для кнопки "Подписать" в /contracts
-$(document).on('click', '.sign-contract-btn', function() {
-    var contractId = $(this).data('id');
-
-    $.ajax({
-        url: '/contracts/sign',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            id: contractId
-        }),
-    });
-});
 
 // Для чекбокса адресов в форме /applications/create
 $(document).on('change', '#copyAddress', function() {

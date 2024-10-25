@@ -21,7 +21,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="contractViewModel : ${contractViewModels}">
+                        <tr th:each="contractViewModel : ${contractViewModels}" th:attr="data-id=${contractViewModel.id}">
                             <td th:text="${contractViewModel.id}"></td>
                             <td th:text="${contractViewModel.amount}"></td>
                             <td th:text="${contractViewModel.term}"></td>
@@ -31,7 +31,12 @@
                             <td th:text="${contractViewModel.signStatus}"></td>
                             <td>
                                 <div class="buttons">
-                                    <button class="button is-success sign-contract-btn" th:attr="data-id=${contractViewModel.getId()}">Подписать</button>
+                                    <div th:if="${contractViewModel.signStatus != 'Подписан'}" th:remove="tag">
+                                        <form th:action="@{/contracts/sign}" method="post" style="display:inline;">
+                                            <input type="hidden" name="contractId" th:value="${contractViewModel.id}" />
+                                            <button type="submit" class="button is-success">Подписать</button>
+                                        </form>
+                                    </div>
                                     <button class="button">
                                         <span class="icon">
                                             <i class="fas fa-edit"></i>

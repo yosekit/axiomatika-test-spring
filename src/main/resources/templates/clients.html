@@ -36,7 +36,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="clientViewModel : ${clientViewModels}">
-                            <td th:text="${clientViewModel.id}"></td>
+                            <td th:text="${clientViewModel.id}" th:attr="data-id=${clientViewModel.id}"></td>
                             <td th:text="${clientViewModel.passport}"></td>
                             <td th:text="${clientViewModel.fullName}"></td>
                             <td th:text="${clientViewModel.birthdate}"></td>

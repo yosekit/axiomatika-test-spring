@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 
@@ -55,30 +56,28 @@ public class ApplicationController {
     @PostMapping("/create")
     public String createApplication(
             @Valid @ModelAttribute CreateApplicationRequest applicationRequest,
-            BindingResult bindingResult) {
+            RedirectAttributes redirectAttributes) {
 
-//        if (bindingResult.hasErrors()) {
-//            return "create";
-//        }
+        Long appId = applicationService.createClientWithApplication(applicationRequest);
 
-        applicationService.createClientWithApplication(applicationRequest);
-
-        return "redirect:/applications";
+        redirectAttributes
+                .addFlashAttribute("appCreated", true)
+                .addFlashAttribute("newAppId", appId);
+        return "redirect:/applications/create";
     }
 
     @PostMapping("/approve")
-    public String approveApplication(@RequestBody Map<String, Long> requestData) {
-        Long appId = requestData.get("id");
+    public String approveApplication(@RequestParam Long appId, RedirectAttributes redirectAttributes) {
+        Long contractId = applicationService.createContractFromApplication(appId);
 
-        applicationService.createContractFromApplication(appId);
-
-        return "redirect:/contracts";
+        redirectAttributes
+                .addFlashAttribute("contractCreated", true)
+                .addFlashAttribute("newContractId", contractId);
+        return "redirect:/applications";
     }
 
     @PostMapping("/reject")
-    public String rejectApplication(@RequestBody Map<String, Long> requestData) {
-        Long appId = requestData.get("id");
-
+    public String rejectApplication(@RequestParam Long appId) {
         applicationService.rejectApplication(appId);
 
         return "redirect:/applications";

@@ -315,6 +315,13 @@
         </form>
     </div>
 
+    <div th:if="${appCreated}" class="notification-container">
+        <div class="notification is-info">
+            <button class="delete"></button>
+            Заявка создана. <a th:href="@{/applications(row=${newAppId})}">Перейти. #<span th:text="${newAppId}" th:remove="tag"></span></a>
+        </div>
+    </div>
+
     <div th:replace="~{fragments/general.html :: footer}"></div>
 
     <div th:replace="~{fragments/general.html :: scripts}"></div>

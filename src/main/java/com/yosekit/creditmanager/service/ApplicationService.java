@@ -44,7 +44,7 @@ public class ApplicationService {
     }
 
 
-    public void createClientWithApplication(CreateApplicationRequest applicationRequest) {
+    public Long createClientWithApplication(CreateApplicationRequest applicationRequest) {
         var client = clientService.createClient(applicationRequest.getClient());
 
         var application = new Application(
@@ -56,18 +56,22 @@ public class ApplicationService {
         client.addApplication(application);
 
         applicationRepository.save(application);
+
+        return application.getId();
     }
 
-    public void createContractFromApplication(Long appId) {
+    public Long createContractFromApplication(Long appId) {
         var application = applicationRepository.findById(appId);
 
         if (application.getContract() != null) {
-            return;
+            return null;
         }
 
         this.approveApplication(application);
 
         contractService.createContract(application);
+
+        return application.getContract().getId();
     }
 
 
