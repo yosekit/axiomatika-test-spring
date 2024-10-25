@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" data-theme="light">
+<head th:replace="~{fragments/general.html :: head}"></head>
+<body>
+    <div th:replace="~{fragments/general.html :: header}"></div>
+
+    <div class="container">
+        <div class="columns">
+            <div class="column is-12">
+                <table class="table is-striped is-hoverable is-bordered is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th><abbr title="Id">#</abbr></th>
+                            <th><abbr title="Amount">Сумма</abbr></th>
+                            <th><abbr title="Term">Срок</abbr></th>
+                            <th><abbr title="CreatedAt">Создано</abbr></th>
+                            <th><abbr title="Client">Клиент</abbr></th>
+                            <th><abbr title="SignDate">Дата подписания</abbr></th>
+                            <th><abbr title="SignStatus">Статус подписания</abbr></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="contractViewModel : ${contractViewModels}">
+                            <td th:text="${contractViewModel.id}"></td>
+                            <td th:text="${contractViewModel.amount}"></td>
+                            <td th:text="${contractViewModel.term}"></td>
+                            <td th:text="${contractViewModel.createdAt}"></td>
+                            <td th:text="${contractViewModel.client}"></td>
+                            <td th:text="${contractViewModel.signDate}"></td>
+                            <td th:text="${contractViewModel.signStatus}"></td>
+                            <td>
+                                <div class="buttons">
+                                    <button class="button is-success sign-contract-btn" th:attr="data-id=${contractViewModel.getId()}">Подписать</button>
+                                    <button class="button">
+                                        <span class="icon">
+                                            <i class="fas fa-edit"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/general.html :: footer}"></div>
+
+    <div th:replace="~{fragments/general.html :: scripts}"></div>
+</body>
+</html>

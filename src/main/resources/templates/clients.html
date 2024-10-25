@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" data-theme="light">
+<head th:replace="~{fragments/general.html :: head}"></head>
+<body>
+    <div th:replace="~{fragments/general.html :: header}"></div>
+
+    <div class="container">
+        <div class="columns">
+            <div class="column is-12">
+                <div class="box search-bar">
+                    <div class="field">
+                        <div class="control search-input" id="searchInputContainer">
+                            <input class="input" id="searchInput" type="text" placeholder="Искать по фио...">
+                        </div>
+                    </div>
+                    <div class="buttons">
+                        <button class="button is-link is-light" id="addPassportBtn">По пасспорту</button>
+                        <button class="button is-link is-light" id="addPhoneBtn">По телефону</button>
+                        <button class="button is-info" id="searchButton">Поиск</button>
+                    </div>
+                </div>
+
+
+                <table class="table is-striped is-hoverable is-bordered is-fullwidth" id="clientTable">
+                    <thead>
+                        <tr>
+                            <th><abbr title="Id">#</abbr></th>
+                            <th><abbr title="Passport">Паспорт</abbr></th>
+                            <th><abbr title="FullName">ФИО</abbr></th>
+                            <th><abbr title="Birthdate">Дата рождения</abbr></th>
+                            <th><abbr title="Phone">Телефон</abbr></th>
+                            <th><abbr title="FamilyStatus">Семейное положение</abbr></th>
+                            <th><abbr title="Employment">Занятость</abbr></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="clientViewModel : ${clientViewModels}">
+                            <td th:text="${clientViewModel.id}"></td>
+                            <td th:text="${clientViewModel.passport}"></td>
+                            <td th:text="${clientViewModel.fullName}"></td>
+                            <td th:text="${clientViewModel.birthdate}"></td>
+                            <td th:text="${clientViewModel.phone}"></td>
+                            <td th:text="${clientViewModel.familyStatus}"></td>
+                            <td th:text="${clientViewModel.employment}"></td>
+                            <td>
+                                <div class="buttons">
+                                    <button class="button">
+                                            <span class="icon">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/general.html :: footer}"></div>
+
+    <div th:replace="~{fragments/general.html :: scripts}"></div>
+</body>
+</html>

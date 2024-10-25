@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" data-theme="light">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <!-- Font Awesome 5 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/styles/styles.css}">
+
+    <title th:text="${title}"></title>
+</head>
+<body>
+    <div th:fragment="header" th:remove="tag">
+        <header class="header has-background-dark has-text-white">
+            <div class="container">
+                <h1>АРМ Менеджера по Кредитам</h1>
+            </div>
+        </header>
+
+        <div class="columns">
+            <div class="column is-12">
+                <nav class="navbar is-light is-transparent has-centered-menu" role="navigation" aria-label="main navigation">
+                    <div class="navbar-brand">
+                        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <div id="navbarBasicExample" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a th:href="@{/applications/create}" class="navbar-item">Создание Заявки</a>
+                            <a th:href="@{/applications}" class="navbar-item">Управление Заявками</a>
+                            <a th:href="@{/contracts}" class="navbar-item">Кредитные Договоры</a>
+                            <a th:href="@{/clients}" class="navbar-item">Список Клиентов</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div th:fragment="footer" th:remove="tag">
+        <footer  class="footer mt-5">
+            <div class="container">
+                <div class="content has-text-centered">
+                    <p>
+                        <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>.
+                        The source code is licensed
+                        <a href="https://opensource.org/license/mit">MIT</a>. The
+                        website content is licensed
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0//"
+                        >CC BY NC SA 4.0</a
+                        >.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div th:fragment="scripts" th:remove="tag">
+        <!-- JQuery JS -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script th:src="@{/scripts/main.js}"></script>
+    </div>
+</body>
+</html>
