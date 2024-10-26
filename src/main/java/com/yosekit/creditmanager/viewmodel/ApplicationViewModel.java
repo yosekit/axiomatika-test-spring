@@ -1,11 +1,11 @@
 package com.yosekit.creditmanager.viewmodel;
 
-import com.yosekit.creditmanager.model.Application;
+import com.yosekit.creditmanager.model.Application.ApplicationStatus;
 import com.yosekit.creditmanager.model.Client;
 import com.yosekit.creditmanager.model.Passport;
+import com.yosekit.creditmanager.util.EnumFormatter;
 import com.yosekit.creditmanager.util.ModelFormatter;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class ApplicationViewModel {
             LocalDateTime createdAt,
             Client client,
             Passport passport,
-            Application.ApplicationStatus status
+            ApplicationStatus applicationStatus
     ) {
             this.id = id;
             this.requiredAmount = ModelFormatter.formatMoneyAmount(requiredAmount);
@@ -37,7 +37,7 @@ public class ApplicationViewModel {
             this.createdAt = ModelFormatter.formatTimestamp(createdAt);
             this.client = this.formatClient(client);
             this.passport = this.formatPassport(passport);
-            this.status = this.formatStatus(status);
+            this.status = EnumFormatter.format(applicationStatus);
     }
 
     private String formatClient(Client client) {
@@ -46,14 +46,5 @@ public class ApplicationViewModel {
 
     private String formatPassport(Passport passport) {
         return passport.getNumber() + " " + passport.getSeries();
-    }
-
-    private String formatStatus(Application.ApplicationStatus status) {
-        // TODO enum russian locale (or string returning rule)
-        return switch (status) {
-            case OPEN -> "Открыта";
-            case APPROVED -> "Одобрена";
-            case REJECTED -> "Не одобрена";
-        };
     }
 }

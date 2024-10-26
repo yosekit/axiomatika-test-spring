@@ -1,8 +1,9 @@
 package com.yosekit.creditmanager.viewmodel;
 
 import com.yosekit.creditmanager.model.Client;
-import com.yosekit.creditmanager.model.Contract;
+import com.yosekit.creditmanager.model.Contract.ContractSignStatus;
 import com.yosekit.creditmanager.model.Passport;
+import com.yosekit.creditmanager.util.EnumFormatter;
 import com.yosekit.creditmanager.util.ModelFormatter;
 import lombok.Getter;
 
@@ -30,7 +31,7 @@ public class ContractViewModel {
             Client client,
             Passport passport,
             LocalDate signDate,
-            Contract.ContractSignStatus signStatus
+            ContractSignStatus signStatus
     ) {
         this.id = id;
         this.amount = ModelFormatter.formatMoneyAmount(amount);
@@ -39,7 +40,7 @@ public class ContractViewModel {
         this.client = this.formatClient(client);
         this.passport = this.formatPassport(passport);
         this.signDate = signDate != null ? ModelFormatter.formatDate(signDate) : null;
-        this.signStatus = this.formatStatus(signStatus);
+        this.signStatus = EnumFormatter.format(signStatus);
     }
 
     private String formatClient(Client client) {
@@ -48,12 +49,5 @@ public class ContractViewModel {
 
     private String formatPassport(Passport passport) {
         return passport.getNumber() + " " + passport.getSeries();
-    }
-
-    private String formatStatus(Contract.ContractSignStatus status) {
-        return switch (status) {
-            case UNSIGNED -> "Не подписан";
-            case SIGNED -> "Подписан";
-        };
     }
 }

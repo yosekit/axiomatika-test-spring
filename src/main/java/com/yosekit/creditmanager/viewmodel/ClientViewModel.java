@@ -1,8 +1,9 @@
 package com.yosekit.creditmanager.viewmodel;
 
-import com.yosekit.creditmanager.model.Client;
+import com.yosekit.creditmanager.model.Client.FamilyStatus;
 import com.yosekit.creditmanager.model.Employment;
 import com.yosekit.creditmanager.model.Passport;
+import com.yosekit.creditmanager.util.EnumFormatter;
 import com.yosekit.creditmanager.util.ModelFormatter;
 import lombok.Getter;
 
@@ -25,7 +26,7 @@ public class ClientViewModel {
             String fullName,
             LocalDate birthdate,
             String phone,
-            Client.FamilyStatus status,
+            FamilyStatus familyStatus,
             Employment employment
     ) {
         this.id = id;
@@ -33,20 +34,12 @@ public class ClientViewModel {
         this.fullName = fullName;
         this.birthdate = ModelFormatter.formatDate(birthdate);
         this.phone = ModelFormatter.formatPhone(phone);
-        this.familyStatus = this.formatFamilyStatus(status);
+        this.familyStatus = EnumFormatter.format(familyStatus);
         this.employment = this.formatEmployment(employment);
     }
 
     private String formatPassport(Passport passport) {
         return  passport.getSeries() + " " + passport.getNumber();
-    }
-
-    private String formatFamilyStatus(Client.FamilyStatus status) {
-        // TODO resolve family status for diff genders
-        return switch (status) {
-            case SINGLE -> "Не женат/Не замужем";
-            case MARRIED -> "Женат/Замужем";
-        };
     }
 
     private String formatEmployment(Employment employment) {
