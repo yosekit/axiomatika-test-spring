@@ -10,308 +10,334 @@
                 <div class="column">
                     <h2 class="is-size-3">Создать заявку на кредит</h2>
                 </div>
-
-                <div class="column">
-                    <button class="button">Заполнить из ранее созданных</button>
-                </div>
             </div>
-
         </div>
 
         <form method="post" th:object="${application}" th:action="@{/applications/create}">
-            <div class="box">
-                <div class="columns">
-                    <div class="column">
-                        <h3>Личная информация</h3>
+            <div class="field">
+                <label class="label" for="existingClientId">Для существующего клиента</label>
+                <div class="control">
+                    <div class="select">
+                        <select th:field="*{existingClientId}" id="existingClientId">
+                            <option value="">-- Выбрать --</option>
+                            <option th:each="client : ${existingClients}"
+                                    th:value="${client.id}"
+                                    th:text="${client.fullName}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="fixed-grid has-2-cols">
-                            <div class="grid">
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="fullName">ФИО</label>
-                                        <div class="control">
-                                            <input class="input"
-                                                   type="text"
-                                                   id="fullName"
-                                                   name="fullName"
-                                                   placeholder="Иванов Иван Иванович"
-                                                   required
-                                                   th:field="*{client.fullName}"
-                                            />
-                                            <div th:if="${#fields.hasErrors('client.fullName')}" th:errors="*{client.fullName}"></div>
-                                        </div>
-                                        <div class="help">
+            <div id="clientFormFields" class="client-form-wrapper">
+                <div class="box">
+                    <div class="columns">
+                        <div class="column">
+                            <h3>Личная информация</h3>
 
+                            <div class="fixed-grid has-2-cols">
+                                <div class="grid">
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="fullName">ФИО</label>
+                                            <div class="control has-icons-right">
+                                                <input th:classappend="${#fields.hasErrors('client.fullName') ? 'is-danger' : ''}"
+                                                       class="input"
+                                                       type="text"
+                                                       id="fullName"
+                                                       name="fullName"
+                                                       placeholder="Иванов Иван Иванович"
+                                                       required
+                                                       th:field="*{client.fullName}"
+                                                />
+                                                <span th:if="${#fields.hasErrors('client.fullName')}" class="icon is-small is-right">
+                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                </span>
+                                            </div>
+                                            <p th:if="${#fields.hasErrors('client.fullName')}"
+                                               class="help is-danger"
+                                               th:errors="*{client.fullName}">
+                                            </p>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="birthdate">Дата рождения</label>
-                                        <div class="control">
-                                            <input
-                                                    class="input"
-                                                    type="date"
-                                                    id="birthdate"
-                                                    name="birthDate"
-                                                    required
-                                                    th:field="*{client.birthdate}"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="familyStatus">Семейное положение</label>
-                                        <div class="control">
-                                            <div class="select">
-                                                <select
-                                                        id="familyStatus"
-                                                        name="familyStatus"
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="birthdate">Дата рождения</label>
+                                            <div class="control">
+                                                <input
+                                                        class="input"
+                                                        type="date"
+                                                        id="birthdate"
+                                                        name="birthDate"
                                                         required
-                                                        th:field="*{client.familyStatus}"
-                                                >
-                                                    <option value="single">Не женат/не замужем</option>
-                                                    <option value="married">Женат/замужем</option>
-                                                </select>
+                                                        th:field="*{client.birthdate}"
+                                                />
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="phone">Номер телефона</label>
-                                        <input
-                                                class="input"
-                                                type="tel"
-                                                id="phone"
-                                                name="phone"
-                                                placeholder="+7 (999) 876-54-32"
-                                                required
-                                                th:field="*{client.phone}"
-                                        />
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="familyStatus">Семейное положение</label>
+                                            <div class="control">
+                                                <div class="select">
+                                                    <select
+                                                            id="familyStatus"
+                                                            name="familyStatus"
+                                                            required
+                                                            th:field="*{client.familyStatus}"
+                                                    >
+                                                        <option value="single">Не женат/не замужем</option>
+                                                        <option value="married">Женат/замужем</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="phone">Номер телефона</label>
+                                            <input
+                                                    class="input"
+                                                    type="tel"
+                                                    id="phone"
+                                                    name="phone"
+                                                    placeholder="+7 (___) ___-__-__"
+                                                    maxlength="18"
+                                                    required
+
+                                            />
+                                            <input type="hidden" id="phoneRaw" name="phoneRaw" th:field="*{client.phone}"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="column">
+                            <h3>Сведения о занятости</h3>
+
+                            <div class="fixed-grid has-2-cols">
+                                <div class="grid">
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="companyName">Организация</label>
+                                            <input
+                                                    class="input"
+                                                    type="text"
+                                                    id="companyName"
+                                                    name="companyName"
+                                                    required
+                                                    th:field="*{client.employment.companyName}"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="post">Должность</label>
+                                            <input
+                                                    class="input"
+                                                    type="text"
+                                                    id="post"
+                                                    name="post"
+                                                    required
+                                                    th:field="*{client.employment.post}"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="workPeriod">Период работы</label>
+                                            <input
+                                                    class="input"
+                                                    type="date"
+                                                    id="workPeriod"
+                                                    name="workPeriod"
+                                                    required
+                                                    th:field="*{client.employment.workPeriod}"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="salary">Зарплата</label>
+                                            <input
+                                                    class="input"
+                                                    type="text"
+                                                    id="salary"
+                                                    name="salary"
+                                                    maxlength="20"
+                                                    required
+                                            />
+                                            <input type="hidden" id="salaryRaw" name="salaryRaw" th:field="*{client.employment.salary}"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+                </div>
 
-                    <div class="column">
-                        <h3>Сведения о занятости</h3>
+                <div class="box">
+                    <div class="columns">
+                        <div class="column">
+                            <h3>Пасспортные данные</h3>
 
-                        <div class="fixed-grid has-2-cols">
-                            <div class="grid">
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="companyName">Организация</label>
-                                        <input
-                                                class="input"
-                                                type="text"
-                                                id="companyName"
-                                                name="companyName"
-                                                required
-                                                th:field="*{client.employment.companyName}"
-                                        />
+                            <div class="fixed-grid has-2-cols">
+                                <div class="grid">
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="series">Серия</label>
+                                            <input
+                                                    class="input"
+                                                    type="text"
+                                                    id="series"
+                                                    name="series"
+                                                    placeholder="1234"
+                                                    maxlength="4"
+                                                    required
+                                                    th:field="*{client.passport.series}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="number">Номер</label>
+                                            <input
+                                                    class="input"
+                                                    type="text"
+                                                    id="number"
+                                                    name="number"
+                                                    placeholder="123456"
+                                                    maxlength="6"
+                                                    required
+                                                    th:field="*{client.passport.number}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="issuanceDate">Дата выдачи</label>
+                                            <input
+                                                    class="input"
+                                                    type="date"
+                                                    id="issuanceDate"
+                                                    name="issuanceDate"
+                                                    required
+                                                    th:field="*{client.passport.issuanceDate}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="cell">
+                                        <div class="field">
+                                            <label class="label" for="subdivisionCode">Код подразделения</label>
+                                            <input
+                                                    class="input"
+                                                    type="text"
+                                                    id="subdivisionCode"
+                                                    name="subdivisionCode"
+                                                    placeholder="000-000"
+                                                    maxlength="7"
+                                                    required
+                                            />
+                                            <input type="hidden" id="subdivisionCodeRaw" name="subdivisionCodeRaw" th:field="*{client.passport.subdivisionCode}"/>
+                                        </div>
+                                    </div>
+                                    <div class="cell is-col-span-2">
+                                        <div class="field">
+                                            <label class="label" for="issued">Место выдачи</label>
+                                            <input
+                                                    class="input"
+                                                    type="text"
+                                                    id="issued"
+                                                    name="issued"
+                                                    required
+                                                    th:field="*{client.passport.issued}"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <h3>Контактная информация</h3>
 
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="post">Должность</label>
-                                        <input
-                                                class="input"
-                                                type="text"
-                                                id="post"
-                                                name="post"
-                                                required
-                                                th:field="*{client.employment.post}"
-                                        />
-                                    </div>
-                                </div>
+                            <div class="field">
+                                <label class="label" for="registrationAddress">Адрес постоянной регистрации</label>
+                                <input
+                                        class="input"
+                                        type="text"
+                                        id="registrationAddress"
+                                        name="registrationAddress"
+                                        required
+                                        th:field="*{client.registrationAddress}"
+                                />
+                            </div>
 
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="workPeriod">Период работы</label>
-                                        <input
-                                                class="input"
-                                                type="date"
-                                                id="workPeriod"
-                                                name="workPeriod"
-                                                required
-                                                th:field="*{client.employment.workPeriod}"
-                                        />
-                                    </div>
-                                </div>
+                            <div class="field">
+                                <label class="label" for="residenceAddress">Адрес фактического проживания</label>
+                                <input
+                                        class="input"
+                                        type="text"
+                                        id="residenceAddress"
+                                        name="residenceAddress"
+                                        required
+                                        th:field="*{client.residenceAddress}"
+                                />
 
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="salary">Зарплата</label>
-                                        <input
-                                                class="input"
-                                                type="number"
-                                                id="salary"
-                                                name="salary"
-                                                required
-                                                th:field="*{client.employment.salary}"
-                                        />
-                                    </div>
-                                </div>
-
+                                <label class="label">
+                                    <input type="checkbox" id="copyAddress"/>
+                                    совпадает с регистрацией
+                                </label>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <div class="box">
-                <div class="columns">
-                    <div class="column">
-                        <h3>Пасспортные данные</h3>
-
-                        <div class="fixed-grid has-2-cols">
-                            <div class="grid">
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="series">Серия</label>
-                                        <input
-                                                class="input"
-                                                type="text"
-                                                id="series"
-                                                name="series"
-                                                placeholder="1234"
-                                                required
-                                                th:field="*{client.passport.series}"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="number">Номер</label>
-                                        <input
-                                                class="input"
-                                                type="text"
-                                                id="number"
-                                                name="number"
-                                                placeholder="123456"
-                                                required
-                                                th:field="*{client.passport.number}"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="issuanceDate">Дата выдачи</label>
-                                        <input
-                                                class="input"
-                                                type="date"
-                                                id="issuanceDate"
-                                                name="issuanceDate"
-                                                required
-                                                th:field="*{client.passport.issuanceDate}"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="cell">
-                                    <div class="field">
-                                        <label class="label" for="subdivisionCode">Код подразделения</label>
-                                        <input
-                                                class="input"
-                                                type="text"
-                                                id="subdivisionCode"
-                                                name="subdivisionCode"
-                                                placeholder="000-000"
-                                                required
-                                                th:field="*{client.passport.subdivisionCode}"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="cell is-col-span-2">
-                                    <div class="field">
-                                        <label class="label" for="issued">Место выдачи</label>
-                                        <input
-                                                class="input"
-                                                type="text"
-                                                id="issued"
-                                                name="issued"
-                                                required
-                                                th:field="*{client.passport.issued}"
-                                        />
-                                    </div>
-                                </div>
+            <div class="application-form-wrapper my-5">
+                <div class="box">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label" for="requiredAmount">Сумма кредита</label>
+                                <input
+                                        class="input"
+                                        type="text"
+                                        id="requiredAmount"
+                                        name="requiredAmount"
+                                        required
+                                        maxlength="20"
+                                />
+                                <input type="hidden" id="requiredAmountRaw" name="requiredAmountRaw" th:field="*{requiredAmount}" />
                             </div>
                         </div>
-                    </div>
-                    <div class="column">
-                        <h3>Контактная информация</h3>
 
-                        <div class="field">
-                            <label class="label" for="registrationAddress">Адрес постоянной регистрации</label>
-                            <input
-                                    class="input"
-                                    type="text"
-                                    id="registrationAddress"
-                                    name="registrationAddress"
-                                    required
-                                    th:field="*{client.registrationAddress}"
-                            />
-                        </div>
-
-                        <div class="field">
-                            <label class="label" for="residenceAddress">Адрес фактического проживания</label>
-                            <input
-                                    class="input"
-                                    type="text"
-                                    id="residenceAddress"
-                                    name="residenceAddress"
-                                    required
-                                    th:field="*{client.residenceAddress}"
-                            />
-
-                            <label class="label">
-                                <input type="checkbox" id="copyAddress"/>
-                                совпадает с регистрацией
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="box">
-                <div class="columns">
-                    <div class="column">
-                        <div class="field">
-                            <label class="label" for="requiredAmount">Сумма кредита</label>
-                            <input
-                                    class="input"
-                                    type="number"
-                                    id="requiredAmount"
-                                    name="requiredAmount"
-                                    required
-                                    th:field="*{requiredAmount}"
-                            />
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <label class="label" for="requiredTerm">Срок кредита</label>
-                            <div class="control">
-                                <div class="select">
-                                    <select
-                                            id="requiredTerm"
-                                            name="requiredTerm"
-                                            required
-                                            th:field="*{requiredTerm}"
-                                    >
-                                        <option value="P1M">1 месяц</option>
-                                        <option value="P3M">3 месяца</option>
-                                        <option value="P6M">6 месяцев</option>
-                                        <option value="P9M">9 месяцев</option>
-                                        <option value="P1Y">1 год</option>
-                                    </select>
+                        <div class="column">
+                            <div class="field">
+                                <label class="label" for="requiredTerm">Срок кредита</label>
+                                <div class="control">
+                                    <div class="select">
+                                        <select
+                                                id="requiredTerm"
+                                                name="requiredTerm"
+                                                required
+                                                th:field="*{requiredTerm}"
+                                        >
+                                            <option value="P1M">1 месяц</option>
+                                            <option value="P3M">3 месяца</option>
+                                            <option value="P6M">6 месяцев</option>
+                                            <option value="P9M">9 месяцев</option>
+                                            <option value="P1Y">1 год</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>

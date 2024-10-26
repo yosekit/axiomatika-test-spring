@@ -6,7 +6,8 @@ import java.util.Map;
 public interface BaseRepository<T, ID> {
     T findById(ID id);
     List<T> findAll();
-    public List<T> findByColumns(Map<String, Object> criteria);
+    List<T> findAll(List<String> columns);
+    List<T> findByColumns(Map<String, Object> criteria);
     void save(T entity);
     void update(T entity);
     void delete(T entity);

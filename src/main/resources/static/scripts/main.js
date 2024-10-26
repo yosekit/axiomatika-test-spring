@@ -127,3 +127,79 @@ $(document).on('change', '#copyAddress', function() {
         $("#residenceAddress").val("");
     }
 });
+
+
+// Для выпадающего списка клиентов в /applications/create
+$(document).on('change', "#existingClientId", function() {
+    if ($(this).val() !== "") {
+        $("#clientFormFields").css("display", "none");
+        $("#clientFormFields").find("input, select").prop("disabled", true);
+    } else {
+        $("#clientFormFields").css("display", "block");
+        $("#clientFormFields").find("input, select").prop("disabled", false);
+    }
+});
+
+// форматирование телефона по шаблону "+7 (___) ___-__-__"
+$('#phone').on('input', function () {
+    let value = $(this).val().replace(/\D/g, '');
+
+    let formattedValue = '+7 ';
+    if (value.length > 1) formattedValue += `(${value.substring(1, 4)}`;
+    if (value.length >= 4) formattedValue += `) ${value.substring(4, 7)}`;
+    if (value.length >= 7) formattedValue += `-${value.substring(7, 9)}`;
+    if (value.length >= 9) formattedValue += `-${value.substring(9, 11)}`;
+
+    $(this).val(formattedValue);
+
+    $('#phoneRaw').val(value);
+});
+
+// Форматирование для серии паспорта (4 цифры)
+$('#series').on('input', function () {
+    let input = $(this).val().replace(/\D/g, '');
+    if (input.length > 4) input = input.substring(0, 4);
+    $(this).val(input);
+});
+
+// Форматирование для номера паспорта (6 цифр)
+$('#number').on('input', function () {
+    let input = $(this).val().replace(/\D/g, '');
+    if (input.length > 6) input = input.substring(0, 6);
+    $(this).val(input);
+});
+
+// Форматирование для кода подразделения (000-000)
+$('#subdivisionCode').on('input', function () {
+    let input = $(this).val().replace(/\D/g, '');
+    if (input.length > 6) input = input.substring(0, 6);
+
+    let formattedValue = input;
+    if (input.length > 3) formattedValue = `${input.substring(0, 3)}-${input.substring(3)}`;
+
+    $(this).val(formattedValue);
+
+    $('#subdivisionCodeRaw').val(input);
+});
+
+// Форматирование зарплаты
+$('#salary').on('input', function () {
+    let input = $(this).val().replace(/\D/g, '');
+    if (input.length > 20) input = input.substring(0, 20);
+
+    let formattedValue = input.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    $(this).val(formattedValue);
+    $('#salaryRaw').val(input);
+});
+
+// Форматирование суммы кредита
+$('#requiredAmount').on('input', function () {
+    let input = $(this).val().replace(/\D/g, '');
+    if (input.length > 20) input = input.substring(0, 20);
+
+    let formattedValue = input.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    $(this).val(formattedValue);
+    $('#requiredAmountRaw').val(input);
+});

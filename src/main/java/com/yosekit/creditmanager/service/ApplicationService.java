@@ -46,7 +46,11 @@ public class ApplicationService {
 
 
     public Long createClientWithApplication(CreateApplicationRequest applicationRequest) {
-        var client = clientService.createClient(applicationRequest.getClient());
+        Long existingClientId = applicationRequest.getExistingClientId();
+
+        Client client = existingClientId != null
+                ? clientRepository.findById(existingClientId)
+                : clientService.createClient(applicationRequest.getClient());
 
         var application = new Application(
                 applicationRequest.getRequiredAmount(),

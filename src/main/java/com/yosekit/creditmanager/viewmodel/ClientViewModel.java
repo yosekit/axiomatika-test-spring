@@ -1,24 +1,49 @@
 package com.yosekit.creditmanager.viewmodel;
 
-import com.yosekit.creditmanager.model.Client.FamilyStatus;
+import com.yosekit.creditmanager.model.Client;
 import com.yosekit.creditmanager.model.Employment;
 import com.yosekit.creditmanager.model.Passport;
 import com.yosekit.creditmanager.util.EnumFormatter;
 import com.yosekit.creditmanager.util.ModelFormatter;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
+@NoArgsConstructor
 public class ClientViewModel {
 
-    private final Long id;
-    private final String passport;
-    private final String fullName;
-    private final String birthdate;
-    private final String phone;
-    private final String familyStatus;
-    private final String employment;
+    @Setter
+    private Long id;
+    @Setter
+    private String fullName;
+    private String passport;
+    private String birthdate;
+    private String phone;
+    private String familyStatus;
+    private String employment;
+
+    public void setPassport(Passport passport) {
+        this.passport = this.formatPassport(passport);
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = ModelFormatter.formatDate(birthdate);
+    }
+
+    public void setPhone(String phone) {
+        this.phone = ModelFormatter.formatPhone(phone);
+    }
+
+    public void setFamilyStatus(Client.FamilyStatus familyStatus) {
+        this.familyStatus = EnumFormatter.format(familyStatus);
+    }
+
+    public void setEmployment(Employment employment) {
+        this.employment = this.formatEmployment(employment);
+    }
 
     public ClientViewModel(
             Long id,
@@ -26,7 +51,7 @@ public class ClientViewModel {
             String fullName,
             LocalDate birthdate,
             String phone,
-            FamilyStatus familyStatus,
+            Client.FamilyStatus familyStatus,
             Employment employment
     ) {
         this.id = id;

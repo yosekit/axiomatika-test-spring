@@ -28,6 +28,9 @@ public class ApplicationController {
     @Autowired
     private ApplicationService applicationService;
 
+    @Autowired
+    private ClientService clientService;
+
     @GetMapping
     public String applications(Model model) {
         var appViewModels = applicationService.getAllApplications();
@@ -40,23 +43,33 @@ public class ApplicationController {
 
     @GetMapping("/create")
     public String index(Model model) {
-        var application = new CreateApplicationRequest(
+        var applicationRequest = new CreateApplicationRequest(
                 new CreateClientRequest(
                         new CreateEmploymentRequest(),
                         new CreatePassportRequest()
                 )
         );
 
+        var clients = clientService.getAllClientsPlain();
+
         model
                 .addAttribute("title", "Create Page")
-                .addAttribute("application", application);
+                .addAttribute("application", applicationRequest)
+                .addAttribute("existingClients", clients);
         return "create";
     }
 
     @PostMapping("/create")
     public String createApplication(
-            @Valid @ModelAttribute CreateApplicationRequest applicationRequest,
+            @Valid @ModelAttribute("application") CreateApplicationRequest applicationRequest,
+            BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
+        boolean isNewClient = applicationRequest.getExistingClientId() == null;
+
+        // TODO validation not working
+        if (isNewClient && bindingResult.hasErrors()) {
+            return "create";
+        }
 
         Long appId = applicationService.createClientWithApplication(applicationRequest);
 

@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -36,6 +34,15 @@ public class ClientService {
 
     public List<ClientViewModel> getAllClients() {
         return mapList(clientRepository.findAll());
+    }
+
+    public List<ClientViewModel> getAllClientsPlain() {
+        return clientRepository.findAll(Arrays.asList("id", "fullName")).stream().map(client -> {
+            var viewModel = new ClientViewModel();
+            viewModel.setId(client.getId());
+            viewModel.setFullName(client.getFullName());
+            return viewModel;
+        }).toList();
     }
 
     public List<ClientViewModel> searchClients(String fullName, String passport, String phone) {

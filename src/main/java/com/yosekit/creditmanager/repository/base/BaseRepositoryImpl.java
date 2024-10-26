@@ -1,5 +1,6 @@
 package com.yosekit.creditmanager.repository.base;
 
+import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
@@ -35,6 +36,18 @@ public abstract class BaseRepositoryImpl<T, ID> implements BaseRepository<T, ID>
     public List<T> findAll() {
         return entityManager
                 .createQuery("SELECT e FROM " + persistentClass.getSimpleName() + " e", persistentClass)
+                .getResultList();
+    }
+
+    @Override
+    public List<T> findAll(List<String> columns) {
+        var entityGraph = entityManager.createEntityGraph(persistentClass);
+
+        entityGraph.addAttributeNodes(columns.toArray(String[]::new));
+
+        return entityManager
+                .createQuery("SELECT e FROM " + persistentClass.getSimpleName() + " e", persistentClass)
+                .setHint("javax.persistence.fetchgraph", entityGraph)
                 .getResultList();
     }
 
