@@ -31,22 +31,25 @@ $(document).ready(function() {
 
     // Добавить "пасспорт" в поиск
     $('#addPassportBtn').click(function() {
-        addTagToSearchInput('passport', 'пасспорт');
+        addTagToSearchInput('passport', '1234 556677', 'fa-passport');
     });
 
     // Добавить "телефон" в поиск
     $('#addPhoneBtn').click(function() {
-        addTagToSearchInput('phone', 'телефон');
+        addTagToSearchInput('phone', '89992345678', 'fa-phone');
     });
 
     // Добавить тег в поиск
-    function addTagToSearchInput(type, label) {
+    function addTagToSearchInput(type, label, faIcon) {
         if ($('#searchInputContainer span[data-type="' + type + '"]').length > 0) {
             return;
         }
 
         var tag = $('<span>').attr('data-type', type).html(`
-            ${label}<input type="text" placeholder="${label}" class="input is-small" style="width: 100px;">
+            <span class="icon">
+              <i class="fas ${faIcon}"></i>
+            </span>
+            <input type="text" placeholder="${label}" class="input is-small" style="width: 100px;">
             <i class="fas fa-times"></i>`);
         $('#searchInputContainer').append(tag);
 

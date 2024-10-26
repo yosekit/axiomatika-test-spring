@@ -10,7 +10,7 @@
                 <div class="box search-bar">
                     <div class="field">
                         <div class="control search-input" id="searchInputContainer">
-                            <input class="input" id="searchInput" type="text" placeholder="Искать по фио...">
+                            <input class="input" id="searchInput" type="text" placeholder="Искать по ФИО..." />
                         </div>
                     </div>
                     <div class="buttons">
@@ -31,7 +31,6 @@
                             <th><abbr title="Phone">Телефон</abbr></th>
                             <th><abbr title="FamilyStatus">Семейное положение</abbr></th>
                             <th><abbr title="Employment">Занятость</abbr></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,15 +42,6 @@
                             <td th:text="${clientViewModel.phone}"></td>
                             <td th:text="${clientViewModel.familyStatus}"></td>
                             <td th:text="${clientViewModel.employment}"></td>
-                            <td>
-                                <div class="buttons">
-                                    <button class="button">
-                                            <span class="icon">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                    </button>
-                                </div>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
